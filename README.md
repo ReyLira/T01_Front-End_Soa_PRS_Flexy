@@ -1,2 +1,2 @@
-# T01_Front-End_Soa_PRS_Flexy
-Contendrá todo el código de la nueva plantilla, implementación y todo lo necesario (PRS).
+# CarlosSanchez_SOA_Back-End_PRS_Transactional
+Contendrá todo el código que abarca el microservicio de "Adolescente - Funcionario" una transaccional que junta las dos tablas.
