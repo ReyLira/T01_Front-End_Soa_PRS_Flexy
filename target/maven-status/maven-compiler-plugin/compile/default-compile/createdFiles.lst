@@ -1,5 +1,0 @@
-com\example\googleapi\util\GoogleApiUtil.class
-com\example\googleapi\service\GoogleApiService.class
-com\example\googleapi\dto\GoogleSheetDTO.class
-com\example\googleapi\GoogleapiApplication.class
-com\example\googleapi\controller\DashboardController.class

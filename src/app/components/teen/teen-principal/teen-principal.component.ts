@@ -9,6 +9,7 @@ import {Teen} from "../../component-funcionality/models/teen/teen.model";
 import {Router} from "@angular/router";
 import {MatPaginator} from "@angular/material/paginator";
 import { MatTableDataSource } from '@angular/material/table';
+import { ArchivosComponent } from '../../archivos/archivos.component';
 
 @Component({
   selector: 'app-teen-principal',
@@ -45,7 +46,7 @@ export class TeenPrincipalComponent implements OnInit {
   constructor(
     public _teenService: TeenService,
     public _funcionaryService: FuncionaryService,
-    private _router: Router,
+    private _router: Router, private _dialog: MatDialog
   ) {
   }
 
@@ -187,4 +188,16 @@ export class TeenPrincipalComponent implements OnInit {
       this.findAllDataActiveTeen();
     });
   }
+
+  openArchivosDialog(dni: string) {
+    const dialogRef = this._dialog.open(ArchivosComponent, {
+      data: { dni: dni },
+      width: '50%', // Personaliza el ancho según tus necesidades
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
 }

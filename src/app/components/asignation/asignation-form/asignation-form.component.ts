@@ -16,7 +16,8 @@ export class AsignationFormComponent implements OnInit, OnDestroy {
   funcionaryData: any[] = [];
   teenData: any[] = [];
   selectedTeenIDs: any[] = [];
-
+  searchTerm: string = '';
+  filteredTeenData: any[] = [];
 
   constructor(private router: Router,
     public asignationService: AsignationService,
@@ -42,9 +43,6 @@ export class AsignationFormComponent implements OnInit, OnDestroy {
     this.findAllTeen();
     this.finAllDataTeenNoRegistered();
   }
-
-
-
 
   navigateToAsignationList() {
     this.router.navigate(['asignation-list']).then(() => {
@@ -156,7 +154,6 @@ export class AsignationFormComponent implements OnInit, OnDestroy {
     }
     return false;  // Devuelve false en caso de que idTeenControl sea nulo
   }
-
 
   ngOnDestroy(): void {
     this.asignationService.transactionSelected = undefined;

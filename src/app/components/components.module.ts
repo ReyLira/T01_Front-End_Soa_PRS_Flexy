@@ -22,7 +22,9 @@ import { TooltipsComponent } from './tooltips/tooltips.component';
 import { TeenPrincipalComponent } from './teen/teen-principal/teen-principal.component';
 import { TeenFormComponent } from './teen/teen-form/teen-form.component';
 import { AsignationFormComponent } from './asignation/asignation-form/asignation-form.component';
-import { AsignationPrincipalComponent } from './asignation/asignation-principal/asignation-principal.component'
+import { AsignationPrincipalComponent } from './asignation/asignation-principal/asignation-principal.component';
+import { MatTableModule } from '@angular/material/table';
+import { ArchivosComponent } from './archivos/archivos.component';
 
 
 @NgModule({
@@ -63,12 +65,14 @@ import { AsignationPrincipalComponent } from './asignation/asignation-principal/
     SliderComponent,
     SlideToggleComponent,
     ButtonsComponent,
+    MatTableModule,
   ],
   declarations: [
     TeenPrincipalComponent,
     TeenFormComponent,
     AsignationFormComponent,
-    AsignationPrincipalComponent
+    AsignationPrincipalComponent, 
+    ArchivosComponent
   ]
 })
 export class ComponentsModule { }

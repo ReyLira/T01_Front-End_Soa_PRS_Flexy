@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FeatherModule } from 'angular-feather';
 import { allIcons } from 'angular-feather/icons';
@@ -14,6 +14,7 @@ import { DemoFlexyModule } from './demo-flexy-module'
 import { DashboardModule } from './dashboard/dashboard.module';
 import { ComponentsModule } from './components/components.module';
 import { HttpClientModule } from '@angular/common/http';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -29,9 +30,12 @@ import { HttpClientModule } from '@angular/common/http';
     DashboardModule,
     ComponentsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatTableModule,
   ],
-  providers: [],
+  providers: [ 
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
