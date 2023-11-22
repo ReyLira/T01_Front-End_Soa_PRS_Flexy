@@ -1,27 +1,8 @@
 #formColumn {
   display: flex;
   flex-direction: column;
+  margin: 1rem 1rem 1rem 1rem;
 }
-
-#formColumnAsignationData {
-  display: flex;
-  flex-direction: column;
-}
-
-.formForRegister {
-  margin: 0.7rem 0.7rem 0.0rem 0.7rem;
-}
-
-.content{
-  padding-top: 10px;
-}
-
-.row{
-  display: flex;
-  gap: 10px;
-}
-
-// --------------------------------------------------------------------------------
 
 #buttonActions {
   display: flex;

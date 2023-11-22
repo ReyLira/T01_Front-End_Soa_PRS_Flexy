@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 import { Funcionary } from '../../models/funcionary/funcionary.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -58,15 +59,8 @@ export class FuncionaryService {
     );
   }
 
-  /*
-  mergePdf(pdfUrls: string[]): Observable<Blob> {
-    return this.http.post<Blob>(`${this.baseUrl}/merge-pdf`, pdfUrls, {
-      responseType: 'blob' as 'json'
-    });
+  generarPDF(): Observable<ArrayBuffer> {
+    const url = `${this.urlFuncionary}/export-pdf`;
+    return this._http.get(url, { responseType: 'arraybuffer' });
   }
-
-  getData(): Observable<any> {
-    return this.http.get(this.apiUrl);
-  }
-  */
 }
