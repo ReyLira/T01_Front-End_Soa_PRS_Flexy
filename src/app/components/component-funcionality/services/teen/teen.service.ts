@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 import { Teen } from '../../models/teen/teen.model';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +11,6 @@ export class TeenService {
   private urlUbigeoAddress = `${environment.apiUrlUbigeoAddress}/api/address`;
   private urlOperativeUnit = `${environment.apiUrlOperativeUnit}/api/operativeUnit`;
   private urlAttorney = `${environment.apiUrlAttorney}/api/attorneyData`;
-  private urlarchivos = `${environment.apiarchivos}`;
-  private urldataarchivos = `${environment.apiarchivos}/getData`;
 
   teenSelected: Teen | undefined = undefined;
 
@@ -70,15 +67,5 @@ export class TeenService {
       this.urlTeen + '/reactiveLogical/' + teen.id_teen,
       teen
     );
-  }
-
-  mergePdf(pdfUrls: string[]): Observable<Blob> {
-    return this._http.post<Blob>(`${this.urlarchivos}/merge-pdf`, pdfUrls, {
-      responseType: 'blob' as 'json'
-    });
-  }
-
-  getData(): Observable<any> {
-    return this._http.get(this.urldataarchivos);
   }
 }

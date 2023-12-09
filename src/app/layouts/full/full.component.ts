@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { LoginService } from 'src/app/components/component-funcionality/services/login/login.service';
 
 interface sidebarMenu {
   link: string;
@@ -16,7 +17,7 @@ interface sidebarMenu {
 })
 export class FullComponent {
 
-  search: boolean = false;
+  showBarInfo = true;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -24,7 +25,7 @@ export class FullComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) { }
+  constructor(private breakpointObserver: BreakpointObserver, private loginservice : LoginService) { }
 
   routerActive: string = "activelink";
 
@@ -33,6 +34,21 @@ export class FullComponent {
       link: "/home",
       icon: "home",
       menu: "Dashboard",
+    },
+    {
+      link: "/teen",
+      icon: "grid",
+      menu: "Adolescentes",
+    },
+    {
+      link: "/funcionary",
+      icon: "disc",
+      menu: "Funcionarios",
+    },
+    {
+      link: "/asignation",
+      icon: "disc",
+      menu: "Asignación",
     },
     {
       link: "/button",
@@ -58,16 +74,6 @@ export class FullComponent {
       link: "/menu",
       icon: "menu",
       menu: "Menus",
-    },
-    {
-      link: "/teen-list",
-      icon: "grid",
-      menu: "Adolescentes",
-    },
-    {
-      link: "/asignation-list",
-      icon: "award",
-      menu: "Asignación",
     },
     {
       link: "/expansion",
@@ -120,5 +126,21 @@ export class FullComponent {
       menu: "Slide Toggle",
     },
   ]
+
+  showSideBard() {
+    this.showBarInfo = true;
+  }
+
+  hideSideBard() {
+    this.showBarInfo = !this.showBarInfo;
+  }
+
+  login(){
+    this.loginservice.login();
+  }
+
+  logout(){
+    this.loginservice.logout();
+  }
 
 }

@@ -1,18 +1,18 @@
 <div class="container-button">
-    <button
-            mat-raised-button
-            class="me-8 mb-8"
-            color="primary"
-            id="button-register"
-            (click)="navigateToForm()"
-    >
-        <strong>Agregar Adolescente</strong>
+    <button mat-raised-button class="me-8 mb-8" color="primary" id="button-register" (click)="navigateToForm()">
+        <strong>Agregar Funcionario</strong>
     </button>
     <div class="container-button-new-model">
         <mat-chip-listbox aria-label="Fish selection">
-            <mat-chip-option selected color="accent" (click)="showActive()">Adolescente Activos</mat-chip-option>
+            <mat-chip-option selected color="warn" (click)="showActive()">Adolescente Activos</mat-chip-option>
             <mat-chip-option color="warn" (click)="showInactive()">Adolescente Desactivados</mat-chip-option>
         </mat-chip-listbox>
+    </div>
+    <div>
+        <button (click)="generarPDF()" mat-raised-button class="me-8 mb-8" color="primary" id="button-pdf"><strong>Generar PDF</strong></button>
+        <div *ngIf="pdfSrc">
+            <embed [attr.src]="pdfSrc" type="application/pdf" width="100%" height="600px">
+        </div>
     </div>
 </div>
 
@@ -28,18 +28,17 @@
 
             <h2>Detalles del Funcionario</h2>
             <div class="container-details-teen">
-                <p><strong>Nombre:</strong> {{ selectedTeen?.name }}</p>
-                <p><strong>Apellidos:</strong> {{ selectedTeen?.surnameFather }} {{selectedTeen?.surnameMother}}</p>
-                <p><strong>Número de DNI:</strong> {{ selectedTeen?.dni }}</p>
-                <p><strong>Teléfono:</strong> {{ selectedTeen?.phoneNumber }}</p>
-                <p><strong>Dirección:</strong> {{ selectedTeen?.address }}</p>
-                <p><strong>Fecha de Nacimiento:</strong> {{ selectedTeen?.birthade }}</p>
-                <p><strong>Sexo:</strong> {{ getCompleteConfirmation(selectedTeen?.gender) }}</p>
-                <p><strong>SOA:</strong> {{ getDataInformationOperativeUnit(selectedTeen?.id_operativeunit) }}</p>
-                <p><strong>Crimen Cometido:</strong> {{ selectedTeen?.crimeCommitted }}</p>
-                <p><strong>Apoderado:</strong> {{ getDataInformationAttorney(selectedTeen?.id_attorney) }}</p>
-                <p><strong>Ubicación:</strong> {{ getDataCompleteUbigeoBD(selectedTeen?.codubi) }}</p>
-                <p><strong>Correo Electrónico:</strong> {{ selectedTeen?.email }}</p>
+                <p><strong>Nombre:</strong> {{ selectedFuncionary?.name }}</p>
+                <p>
+                    <strong>Apellidos:</strong> {{ selectedFuncionary?.surnameFather }}
+                    {{selectedFuncionary?.surnameMother}}
+                </p>
+                <p><strong>Número de DNI:</strong> {{ selectedFuncionary?.dni }}</p>
+                <p><strong>Teléfono:</strong> {{ selectedFuncionary?.phoneNumber }}</p>
+                <p><strong>Rango:</strong> {{ selectedFuncionary?.range }}</p>
+                <p><strong>Sexo:</strong> {{ getConfirmationLegalGuardian(selectedFuncionary?.confirmation) }}</p>
+                <p><strong>Dirección:</strong> {{ selectedFuncionary?.address }}</p>
+                <p><strong>Correo Electrónico:</strong> {{ selectedFuncionary?.email }}</p>
             </div>
         </div>
     </div>
@@ -49,12 +48,11 @@
 
             <div class="table-responsive">
                 <table mat-table [dataSource]="dataSourceActive" class="text-nowrap w-100">
+
                     <ng-container matColumnDef="dni">
                         <th mat-header-cell *matHeaderCellDef>Número de DNI</th>
                         <td mat-cell *matCellDef="let element">
-                            <p class="mb-0 fw-medium">
-                                {{ element.dni }}
-                            </p>
+                            <p class="mb-0 fw-medium">{{ element.dni }}</p>
                         </td>
                     </ng-container>
 
@@ -68,14 +66,12 @@
                     <ng-container matColumnDef="surnames">
                         <th mat-header-cell *matHeaderCellDef>Apellidos</th>
                         <td mat-cell *matCellDef="let element">
-                            <p class="mb-0 fw-medium">
-                                {{ element.surnameFather }} {{ element.surnameMother }}
-                            </p>
+                            <p class="mb-0 fw-medium">{{ element.surnameFather }} {{element.surnameMother}}</p>
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="phoneNumber">
-                        <th mat-header-cell *matHeaderCellDef>Celular</th>
+                        <th mat-header-cell *matHeaderCellDef>Teléfono</th>
                         <td mat-cell *matCellDef="let element">
                             <p class="mb-0 fw-medium">
                                 {{ element.phoneNumber }}
@@ -83,39 +79,37 @@
                         </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="operativeUnit">
-                        <th mat-header-cell *matHeaderCellDef>Soa</th>
+                    <ng-container matColumnDef="range">
+                        <th mat-header-cell *matHeaderCellDef>Rango</th>
                         <td mat-cell *matCellDef="let element">
-                            <p class="mb-0 fw-medium">{{ getDataInformationOperativeUnit(element.id_operativeunit) }}</p>
+                            <p class="mb-0 fw-medium">{{ element.range }}</p>
                         </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="attorney">
-                        <th mat-header-cell *matHeaderCellDef>Apoderado</th>
+                    <ng-container matColumnDef="confirmation">
+                        <th mat-header-cell *matHeaderCellDef>Confirmación</th>
                         <td mat-cell *matCellDef="let element">
-                            <p class="mb-0 fw-medium">
-                                {{ getDataInformationAttorney(element.id_attorney) }}
-                            </p>
+                            <p class="mb-0 fw-medium">{{ getConfirmationLegalGuardian(element.confirmation) }}</p>
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef style="width: 15rem">Acciones</th>
                         <td mat-cell *matCellDef="let element">
-                            <button id="buttonEliminar" mat-flat-button color="warn" (click)="deleteDataTeen(element)">
-                                Eliminar
+                            <button id="buttonEliminar" mat-flat-button color="warn"
+                                (click)="deleteLogicalDataFuncionary(element)">Eliminar
                             </button>
                             <button id="buttonModificar" mat-flat-button color="primary"
-                                    (click)="updateDataTeen(element)">Modificar
+                                (click)="updateDataFuncionary(element)">Modificar
                             </button>
                         </td>
                     </ng-container>
 
                     <div class="container1">
-                        <ng-container matColumnDef="details">
+                        <ng-container matColumnDef="moreInformation">
                             <th mat-header-cell *matHeaderCellDef style="width: 0.1rem">Más información</th>
                             <td mat-cell *matCellDef="let element">
-                                <button mat-icon-button color="primary" (click)="showFuncionarioDetails(element)">
+                                <button mat-icon-button color="primary" (click)="showFuncionaryDetails(element)">
                                     <mat-icon>visibility</mat-icon>
                                 </button>
                             </td>
@@ -133,7 +127,7 @@
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<div class="container-inactive" *ngIf="showDataInactive">
+<div class="container-active" *ngIf="showDataInactive">
     <div *ngIf="showDetails" class="dialog-background">
         <div class="dialog-content">
 
@@ -145,34 +139,32 @@
 
             <h2>Detalles del Funcionario</h2>
             <div class="container-details-teen">
-                <p><strong>Nombre:</strong> {{ selectedTeen?.name }}</p>
-                <p><strong>Apellidos:</strong> {{ selectedTeen?.surnameFather }} {{selectedTeen?.surnameMother}}</p>
-                <p><strong>Número de DNI:</strong> {{ selectedTeen?.dni }}</p>
-                <p><strong>Teléfono:</strong> {{ selectedTeen?.phoneNumber }}</p>
-                <p><strong>Dirección:</strong> {{ selectedTeen?.address }}</p>
-                <p><strong>Fecha de Nacimiento:</strong> {{ selectedTeen?.birthade }}</p>
-                <p><strong>Sexo:</strong> {{ getCompleteConfirmation(selectedTeen?.gender) }}</p>
-                <p><strong>SOA:</strong> {{ getDataInformationOperativeUnit(selectedTeen?.id_operativeunit) }}</p>
-                <p><strong>Crimen Cometido:</strong> {{ selectedTeen?.crimeCommitted }}</p>
-                <p><strong>Apoderado:</strong> {{ getDataInformationAttorney(selectedTeen?.id_attorney) }}</p>
-                <p><strong>Ubicación:</strong> {{ getDataCompleteUbigeoBD(selectedTeen?.codubi) }}</p>
-                <p><strong>Correo Electrónico:</strong> {{ selectedTeen?.email }}</p>
+                <p><strong>Nombre:</strong> {{ selectedFuncionary?.name }}</p>
+                <p>
+                    <strong>Apellidos:</strong> {{ selectedFuncionary?.surnameFather }}
+                    {{selectedFuncionary?.surnameMother}}
+                </p>
+                <p><strong>Número de DNI:</strong> {{ selectedFuncionary?.dni }}</p>
+                <p><strong>Teléfono:</strong> {{ selectedFuncionary?.phoneNumber }}</p>
+                <p><strong>Rango:</strong> {{ selectedFuncionary?.range }}</p>
+                <p><strong>Sexo:</strong> {{ getConfirmationLegalGuardian(selectedFuncionary?.confirmation) }}</p>
+                <p><strong>Dirección:</strong> {{ selectedFuncionary?.address }}</p>
+                <p><strong>Correo Electrónico:</strong> {{ selectedFuncionary?.email }}</p>
             </div>
         </div>
     </div>
 
     <mat-card class="w-100">
         <mat-card-content>
-            <h4 class="mb-56">Adolescentes Infractores</h4>
+            <h4 class="mb-56">Funcionarios</h4>
 
             <div class="table-responsive">
                 <table mat-table [dataSource]="dataSourceInactive" class="text-nowrap w-100">
+
                     <ng-container matColumnDef="dni">
                         <th mat-header-cell *matHeaderCellDef>Número de DNI</th>
                         <td mat-cell *matCellDef="let element">
-                            <p class="mb-0 fw-medium">
-                                {{ element.dni }}
-                            </p>
+                            <p class="mb-0 fw-medium">{{ element.dni }}</p>
                         </td>
                     </ng-container>
 
@@ -186,14 +178,12 @@
                     <ng-container matColumnDef="surnames">
                         <th mat-header-cell *matHeaderCellDef>Apellidos</th>
                         <td mat-cell *matCellDef="let element">
-                            <p class="mb-0 fw-medium">
-                                {{ element.surnameFather }} {{ element.surnameMother }}
-                            </p>
+                            <p class="mb-0 fw-medium">{{ element.surnameFather }} {{element.surnameMother}}</p>
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="phoneNumber">
-                        <th mat-header-cell *matHeaderCellDef>Celular</th>
+                        <th mat-header-cell *matHeaderCellDef>Teléfono</th>
                         <td mat-cell *matCellDef="let element">
                             <p class="mb-0 fw-medium">
                                 {{ element.phoneNumber }}
@@ -201,40 +191,37 @@
                         </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="operativeUnit">
-                        <th mat-header-cell *matHeaderCellDef>Soa</th>
+                    <ng-container matColumnDef="range">
+                        <th mat-header-cell *matHeaderCellDef>Rango</th>
                         <td mat-cell *matCellDef="let element">
-                            <p class="mb-0 fw-medium">{{ getDataInformationOperativeUnit(element.id_operativeunit) }}</p>
+                            <p class="mb-0 fw-medium">{{ element.range }}</p>
                         </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="attorney">
-                        <th mat-header-cell *matHeaderCellDef>Apoderado</th>
+                    <ng-container matColumnDef="confirmation">
+                        <th mat-header-cell *matHeaderCellDef>Confirmación</th>
                         <td mat-cell *matCellDef="let element">
-                            <p class="mb-0 fw-medium">
-                                {{ getDataInformationAttorney(element.id_attorney) }}
-                            </p>
+                            <p class="mb-0 fw-medium">{{ getConfirmationLegalGuardian(element.confirmation) }}</p>
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef style="width: 15rem">Acciones</th>
                         <td mat-cell *matCellDef="let element">
-                            <button id="buttonDelete" mat-flat-button color="warn" (click)="reactiveDataTeen(element)">
-                                Restaurar
+                            <button id="buttonDelete" mat-flat-button color="warn"
+                                (click)="reactiveDataFuncionary(element)">Restaurar
                             </button>
-                            <button id="buttonModify" mat-flat-button color="primary" (click)="updateDataTeen(element)"
-                                    disabled>
-                                Modificar
+                            <button id="buttonModify" mat-flat-button color="primary" disabled
+                                (click)="updateDataFuncionary(element)">Modificar
                             </button>
                         </td>
                     </ng-container>
 
                     <div class="container1">
-                        <ng-container matColumnDef="details">
+                        <ng-container matColumnDef="moreInformation">
                             <th mat-header-cell *matHeaderCellDef style="width: 0.1rem">Más información</th>
                             <td mat-cell *matCellDef="let element">
-                                <button mat-icon-button color="primary" (click)="showFuncionarioDetails(element)">
+                                <button mat-icon-button color="primary" (click)="showFuncionaryDetails(element)">
                                     <mat-icon>visibility</mat-icon>
                                 </button>
                             </td>

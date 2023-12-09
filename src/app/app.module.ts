@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FeatherModule } from 'angular-feather';
 import { allIcons } from 'angular-feather/icons';
@@ -14,28 +14,33 @@ import { DemoFlexyModule } from './demo-flexy-module'
 import { DashboardModule } from './dashboard/dashboard.module';
 import { ComponentsModule } from './components/components.module';
 import { HttpClientModule } from '@angular/common/http';
-import { MatTableModule } from '@angular/material/table';
+import {NgOptimizedImage} from "@angular/common";
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 @NgModule({
   declarations: [
     AppComponent,
     FullComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    FeatherModule.pick(allIcons),
-    DemoFlexyModule,
-    DashboardModule,
-    ComponentsModule,
-    FormsModule,
-    HttpClientModule,
-    MatTableModule,
-  ],
-  providers: [ 
-
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        FeatherModule.pick(allIcons),
+        DemoFlexyModule,
+        DashboardModule,
+        ComponentsModule,
+        FormsModule,
+        HttpClientModule,
+        NgOptimizedImage,
+        OAuthModule.forRoot({
+          resourceServer: {
+            allowedUrls: ['http://localhost:8082/'],
+            sendAccessToken: true
+          }
+        })
+    ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -21,10 +21,10 @@ import { ButtonsComponent } from './buttons/buttons.component';
 import { TooltipsComponent } from './tooltips/tooltips.component';
 import { TeenPrincipalComponent } from './teen/teen-principal/teen-principal.component';
 import { TeenFormComponent } from './teen/teen-form/teen-form.component';
-import { AsignationFormComponent } from './asignation/asignation-form/asignation-form.component';
 import { AsignationPrincipalComponent } from './asignation/asignation-principal/asignation-principal.component';
-import { MatTableModule } from '@angular/material/table';
-import { ArchivosComponent } from './archivos/archivos.component';
+import { AsignationFormComponent } from './asignation/asignation-form/asignation-form.component';
+import { FuncionaryPrincipalComponent } from './funcionary/funcionary-principal/funcionary-principal.component';
+import { FuncionaryFormComponent } from './funcionary/funcionary-form/funcionary-form.component'
 
 
 @NgModule({
@@ -65,14 +65,14 @@ import { ArchivosComponent } from './archivos/archivos.component';
     SliderComponent,
     SlideToggleComponent,
     ButtonsComponent,
-    MatTableModule,
   ],
   declarations: [
     TeenPrincipalComponent,
     TeenFormComponent,
+    AsignationPrincipalComponent,
     AsignationFormComponent,
-    AsignationPrincipalComponent, 
-    ArchivosComponent
+    FuncionaryPrincipalComponent,
+    FuncionaryFormComponent
   ]
 })
 export class ComponentsModule { }

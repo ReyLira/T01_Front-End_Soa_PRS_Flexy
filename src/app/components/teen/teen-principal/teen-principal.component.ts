@@ -9,7 +9,6 @@ import {Teen} from "../../component-funcionality/models/teen/teen.model";
 import {Router} from "@angular/router";
 import {MatPaginator} from "@angular/material/paginator";
 import { MatTableDataSource } from '@angular/material/table';
-import { ArchivosComponent } from '../../archivos/archivos.component';
 
 @Component({
   selector: 'app-teen-principal',
@@ -19,9 +18,14 @@ import { ArchivosComponent } from '../../archivos/archivos.component';
 export class TeenPrincipalComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatPaginator) paginatorInactive!: MatPaginator;
 
+  //Almacenamiento de los datos de "Adolescente (Activos | Habilitados)"
   teenData: any[] = [];
-  showTransferForm = false;
+  //Almacenamiento de los datos de "Adolescente (Inactivos | Deshabilitados)"
+  teenDataInactive: any[] = [];
+  showDataInactive = false;
+  showDataActive = false;
   attorneyData: any[] = [];
   operativeUnitData: any[] = [];
   funcionaryData: any[] = [];
@@ -34,19 +38,19 @@ export class TeenPrincipalComponent implements OnInit {
     'surnames',
     'phoneNumber',
     'operativeUnit',
-    'email',
     'attorney',
     'actions',
     'details'
   ];
 
   // Manejar el paginator de la tabla (Teen)
-  dataSource = new MatTableDataSource(this.teenData);
+  dataSourceActive = new MatTableDataSource(this.teenData);
+  dataSourceInactive = new MatTableDataSource(this.teenDataInactive);
 
   constructor(
     public _teenService: TeenService,
     public _funcionaryService: FuncionaryService,
-    private _router: Router, private _dialog: MatDialog
+    private _router: Router,
   ) {
   }
 
@@ -58,6 +62,7 @@ export class TeenPrincipalComponent implements OnInit {
     this.findAllDataAttorney();
     this.findAllDataUbigeo();
     this.findAllDataFuncionaryRankLegalGuardian();
+    this.findAllDataInactiveTeen();
   }
 
   navigateToForm() {
@@ -66,8 +71,8 @@ export class TeenPrincipalComponent implements OnInit {
     });
   }
 
-  showFuncionarioDetails(funcionario: any) {
-    this.selectedTeen = funcionario;
+  showFuncionarioDetails(teen: any) {
+    this.selectedTeen = teen;
     this.showDetails = true;
   }
 
@@ -76,12 +81,24 @@ export class TeenPrincipalComponent implements OnInit {
     this.showDetails = false;
   }
 
-  showForm() {
-    this.showTransferForm = true;
+  showActive() {
+    this.showDataActive = true;
+    this.hideInactive();
+    this.findAllDataActiveTeen();
   }
 
-  hideForm() {
-    this.showTransferForm = false;
+  hideActive() {
+    this.showDataActive = false;
+  }
+
+  showInactive() {
+    this.showDataInactive = true;
+    this.hideActive();
+    this.findAllDataInactiveTeen();
+  }
+
+  hideInactive() {
+    this.showDataInactive = false;
   }
 
   getCompleteConfirmation(confirmation: string): string {
@@ -131,13 +148,24 @@ export class TeenPrincipalComponent implements OnInit {
     }
   }
 
+  //Obtendra todos los datos de adolescente que se encuentran activos.
   findAllDataActiveTeen() {
     this._teenService.findAllDataActive().subscribe((DataTeenBDActive: any) => {
       //console.log('Data Teen Active:', DataTeenBDActive);
       this.teenData = DataTeenBDActive;
-      this.dataSource = new MatTableDataSource(this.teenData);
-      this.dataSource.paginator = this.paginator;
+      this.dataSourceActive = new MatTableDataSource(this.teenData);
+      this.dataSourceActive.paginator = this.paginator;
     });
+  }
+
+  //Obtendra todos los datos de adolescente que se encuentran inactivos.
+  findAllDataInactiveTeen() {
+    this._teenService.findAllDataInactive().subscribe((dataTeenInactive: any) => {
+      //console.log('Data Inactive: ' , dataTeenInactive);
+      this.teenDataInactive = dataTeenInactive;
+      this.dataSourceInactive = new MatTableDataSource(this.teenDataInactive);
+      this.dataSourceInactive.paginator = this.paginatorInactive;
+    })
   }
 
   findAllDataCompleteOperativeUnit() {
@@ -189,14 +217,9 @@ export class TeenPrincipalComponent implements OnInit {
     });
   }
 
-  openArchivosDialog(dni: string) {
-    const dialogRef = this._dialog.open(ArchivosComponent, {
-      data: { dni: dni },
-      width: '50%', // Personaliza el ancho según tus necesidades
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+  reactiveDataTeen(teen: Teen) {
+    this._teenService.reactiveLogicalDataTeen(teen).subscribe((dataTeen: any) => {
+      this.findAllDataInactiveTeen();
     });
   }
 

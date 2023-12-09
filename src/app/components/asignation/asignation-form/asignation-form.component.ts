@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { AsignationService } from '../../component-funcionality/services/asignation/asignation.service';
 import { FuncionaryService } from '../../component-funcionality/services/funcionary/funcionary.service';
@@ -16,14 +16,13 @@ export class AsignationFormComponent implements OnInit, OnDestroy {
   funcionaryData: any[] = [];
   teenData: any[] = [];
   selectedTeenIDs: any[] = [];
-  searchTerm: string = '';
-  filteredTeenData: any[] = [];
+
 
   constructor(private router: Router,
-    public asignationService: AsignationService,
-    private asignationDataFuncionaryService: FuncionaryService,
-    private asignationDataTeenService: TeenService,
-    private fb: FormBuilder) {
+              public asignationService: AsignationService,
+              private asignationDataFuncionaryService: FuncionaryService,
+              private asignationDataTeenService: TeenService,
+              private fb: FormBuilder) {
 
     this.asignationDataForm = this.fb.group({
       id_funcionaryteend: [null],
@@ -43,6 +42,9 @@ export class AsignationFormComponent implements OnInit, OnDestroy {
     this.findAllTeen();
     this.finAllDataTeenNoRegistered();
   }
+
+
+
 
   navigateToAsignationList() {
     this.router.navigate(['asignation-list']).then(() => {
@@ -66,12 +68,13 @@ export class AsignationFormComponent implements OnInit, OnDestroy {
 
   findAllTeen() {
     this.asignationDataTeenService.findAllDataActive().subscribe((dataTeen: any) => {
-      this.teenData = dataTeen;
+      //console.log('Teen: ', dataTeen);
+      //this.teenData = dataTeen;
     })
   }
   finAllDataTeenNoRegistered() {
     this.asignationService.findDataTeenNoRegistered().subscribe((dataTeenNoRegistered: any) => {
-      //console.log('Los adolescente disponibles para el registro son: ', dataTeenNoRegistered);
+      //console.log('Teen no registered: ', dataTeenNoRegistered);
       this.teenData = dataTeenNoRegistered;
     })
   }
@@ -83,6 +86,7 @@ export class AsignationFormComponent implements OnInit, OnDestroy {
     } else {
       // Registrar || Crear
       this.registerNewDataAsignation();
+      this.navigateToAsignationList();
     }
   }
 
@@ -116,8 +120,10 @@ export class AsignationFormComponent implements OnInit, OnDestroy {
           console.error("Error al guardar datos: ", error);
         }
       );
+      this.navigateToAsignationList();
     } else {
       console.error("Los datos del formulario son nulos o faltantes.");
+      this.navigateToAsignationList();
     }
   }
 
@@ -154,6 +160,7 @@ export class AsignationFormComponent implements OnInit, OnDestroy {
     }
     return false;  // Devuelve false en caso de que idTeenControl sea nulo
   }
+
 
   ngOnDestroy(): void {
     this.asignationService.transactionSelected = undefined;

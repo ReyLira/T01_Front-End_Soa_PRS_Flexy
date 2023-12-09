@@ -19,20 +19,27 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { FullComponent } from './layouts/full/full.component';
 import { TeenPrincipalComponent } from './components/teen/teen-principal/teen-principal.component';
 import {TeenFormComponent} from "./components/teen/teen-form/teen-form.component";
-import { AsignationPrincipalComponent } from './components/asignation/asignation-principal/asignation-principal.component';
-import { AsignationFormComponent } from './components/asignation/asignation-form/asignation-form.component';
+import {
+  AsignationPrincipalComponent
+} from "./components/asignation/asignation-principal/asignation-principal.component";
+import {AsignationFormComponent} from "./components/asignation/asignation-form/asignation-form.component";
+import {
+  FuncionaryPrincipalComponent
+} from "./components/funcionary/funcionary-principal/funcionary-principal.component";
+import { FuncionaryFormComponent } from './components/funcionary/funcionary-form/funcionary-form.component';
+import { permissionsGuard } from './components/guards/permissions.guard';
 
 const routes: Routes = [
   {
     path:"",
     component:FullComponent,
     children: [
-      {path:"", redirectTo:"/home", pathMatch:"full"},
+      {path:"", redirectTo:"home", pathMatch:"full"},
       {path:"home", component:DashboardComponent},
       {path:"alerts", component:AlertsComponent},
+      {path:"asignation", canActivate:[permissionsGuard],component: AsignationPrincipalComponent},
       {path:"forms", component:FormsComponent},
-      {path:"teen-list", component:TeenPrincipalComponent},
-      {path:"asignation-list", component: AsignationPrincipalComponent},
+      {path:"teen",canActivate:[permissionsGuard] ,component:TeenPrincipalComponent},
       {path:"grid-list", component:GridListComponent},
       {path:"menu", component:MenuComponent},
       {path:"tabs", component:TabsComponent},
@@ -47,12 +54,11 @@ const routes: Routes = [
       {path:"tooltip", component:TooltipsComponent},
       {path:"button", component:ButtonsComponent},
       {path:"teen-form", component: TeenFormComponent},
-      {path:"asignation-form", component: AsignationFormComponent}
+      {path:"asignation-form", component: AsignationFormComponent},
+      {path:"funcionary", component: FuncionaryPrincipalComponent},
+      {path: "funcionary-form", component: FuncionaryFormComponent},
     ]
   },
-
-  {path:"", redirectTo:"/home", pathMatch:"full"},
-  {path:"**", redirectTo:"/home", pathMatch:"full"},
 ];
 
 @NgModule({

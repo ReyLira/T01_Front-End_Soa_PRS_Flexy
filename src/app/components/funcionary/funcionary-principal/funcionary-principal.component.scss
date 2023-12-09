@@ -2,42 +2,59 @@
   overflow-x: auto;
 }
 
-/* Estilos para las celdas y encabezados de la tabla */
-.th.mat-header-cell,
-.td.mat-cell {
-  text-align: center;
-  vertical-align: middle;
-  padding: 16px;
-}
-
 td, th {
   text-align: center;
   vertical-align: middle;
 }
 
-.mat-header-cell,
-.mat-cell,
-.mat-footer-cell {
+td.mat-cell {
   padding: 16px;
 }
 
-.th.mat-header-cell {
+th.mat-header-cell:first-of-type,
+td.mat-cell:first-of-type,
+td.mat-footer-cell:first-of-type {
   padding: 16px;
+}
+
+#button-register {
+  color: white;
+  border-radius: 15px;
+}
+
+#button-pdf {
+  color: white;
+  border-radius: 15px;
+  margin-left: 10.5rem;
+  margin-top: -3.2rem;
+}
+
+
+.container-button-new-model {
+  display: flex;
+  margin-left: 52.5rem;
+  margin-top: -2.88rem;
+}
+
+.container-active {
+  margin-top: 1.5rem;
+}
+
+th.mat-header-cell {
+  padding: 16px;
+}
+
+.mat-header-cell {
   font-size: 14px;
 }
 
 #buttonEliminar,
 #buttonModificar,
-#buttonRegister {
-  /* Estilo para los botones */
+#buttonDelete,
+#buttonModify {
   margin: 2px;
   border-radius: 15px;
   width: 100px;
-}
-
-#buttonRegister {
-  color: white;
-  width: 150px;
 }
 
 .dialog-background {
@@ -68,22 +85,11 @@ td, th {
   margin-top: 10px;
 }
 
-.container-div-button-close {
+.container-div-button-close{
   display: flex;
   justify-content: flex-end;
 }
 
-.container-details-teen {
+.container-details-funcionary {
   margin: 30px;
-}
-
-#tableOfDataFuncionary {
-  border-radius: 10px;
-  /* Ajusta el valor según tu preferencia */
-  border-collapse: collapse;
-  /* Opcional: Fusiona los bordes de las celdas */
-}
-
-.container-active {
-  margin-top: 1.5rem;
 }
